@@ -29,10 +29,10 @@ Use <- as_matrix(use)
 Cou_NA <- sparseMatrix(i = conc$FABIO_code, j = conc$EXIOBASE_code) * 1
 Cou <- Cou_NA[, 1:49] # Remove 50th column of countries missing in EXIOBASE
 
-
+# Function to create the hybrid part for a certain year
 hybridise <- function(year, Sup, Use, Cou) {
   
-  require(Matrix) # necessary for forked processes
+  require(Matrix) # Necessary for forked processes
   
   # Read EXIOBASE Z and FABIO Y
   load(paste0("/mnt/nfs_fineprint/tmp/fabio/", year, "_Y.RData"))
@@ -73,8 +73,12 @@ hybridise <- function(year, Sup, Use, Cou) {
   C
 }
 
+
+# Execute -----------------------------------------------------------------
+
 output <- parLapply(cl, years, hybridise, Sup, Use, Cou)
 
 for(i in seq_along(output)) {
-  saveRDS(output[[i]], paste0(years[[i]], "_Z.rds"))
+  saveRDS(output[[i]], 
+          paste0("/mnt/nfs_fineprint/tmp/fabio_hybrid/", years[[i]], "_Z.rds"))
 }
