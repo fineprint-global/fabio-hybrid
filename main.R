@@ -34,9 +34,11 @@ hybridise <- function(year, Sup, Use, Cou) {
   
   require(Matrix) # necessary for forked processes
   
+  # Read EXIOBASE Z and FABIO Y
   load(paste0("/mnt/nfs_fineprint/tmp/fabio/", year, "_Y.RData"))
   load(paste0("/mnt/nfs_fineprint/tmp/exiobase/pxp/", year, "_Z.RData"))
   
+  # Calculate Tech matrices for the 49 EXIO countries
   Tec <- vector("list", 49)
   for(i in 1:49) {
     tmp <- Matrix(0, nrow = 200, ncol = 200)
@@ -46,10 +48,14 @@ hybridise <- function(year, Sup, Use, Cou) {
     Tec[[i]] <- tmp 
   }
   
+  # Get the columns of Y containing the other use category to allocate
   Oth <- Y[, grep("OtherUses$", colnames(Y))]
   rm(Y, Z)
+  
+  # Create matrix for country matching
   A <- Oth %*% Cou
   
+  # Create matrix for sector matching
   B <- vector("list", 49)
   for(i in 1:49) {
     B[[i]] <- Sup %*% Tec[[i]] * Use
@@ -57,8 +63,8 @@ hybridise <- function(year, Sup, Use, Cou) {
     B[[i]][is.na(B[[i]])] <- 0
   }
   
+  # Compute the hybrid part from A and B
   C <- Matrix(0, nrow = 192 * 130, ncol = 49 * 200, sparse = TRUE)
-  
   for(i in 1:49) {
     C[, (1 + 200 * (i - 1)):(200 * i)] <-
       do.call(rbind, replicate(192, B[[i]], simplify = FALSE)) * A[, i]
