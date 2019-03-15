@@ -82,3 +82,5 @@ for(i in seq_along(output)) {
   saveRDS(output[[i]], 
           paste0("/mnt/nfs_fineprint/tmp/fabio_hybrid/", years[[i]], "_Z.rds"))
 }
+
+stopCluster(cl)
