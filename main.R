@@ -1,13 +1,5 @@
 library(Matrix)
 
-# Setup to process in parallel
-library(parallel)
-n_cores <- detectCores() - 2
-cl <- makeCluster(n_cores)
-
-# Years to calculate hybridised FABIO for
-years <- 1995:2013
-
 # Matrices necessary
 sup <- readODS::read_ods("fabio-exiobase.ods", sheet = 1, skip = 1)
 use <- readODS::read_ods("fabio-exiobase.ods", sheet = 2, skip = 1)
@@ -36,7 +28,11 @@ hybridise <- function(year, Sup, Use, Cou) {
   
   # Read EXIOBASE Z and FABIO Y
   load(paste0("/mnt/nfs_fineprint/tmp/fabio/", year, "_Y.RData"))
-  load(paste0("/mnt/nfs_fineprint/tmp/exiobase/pxp/", year, "_Z.RData"))
+  if(year<1995){
+    load(paste0("/mnt/nfs_fineprint/tmp/exiobase/pxp/1995_Z.RData"))
+  } else {
+    load(paste0("/mnt/nfs_fineprint/tmp/exiobase/pxp/", year, "_Z.RData"))
+  }
   
   # Calculate Tech matrices for the 49 EXIO countries
   Tec <- vector("list", 49)
@@ -76,11 +72,19 @@ hybridise <- function(year, Sup, Use, Cou) {
 
 # Execute -----------------------------------------------------------------
 
+# Setup to process in parallel
+library(parallel)
+n_cores <- detectCores() - 2
+cl <- makeCluster(n_cores)
+
+# Years to calculate hybridised FABIO for
+years <- 1986:2013
+
 output <- parLapply(cl, years, hybridise, Sup, Use, Cou)
 
 for(i in seq_along(output)) {
   saveRDS(output[[i]], 
-          paste0("/mnt/nfs_fineprint/tmp/fabio_hybrid/", years[[i]], "_Z.rds"))
+          paste0("/mnt/nfs_fineprint/tmp/fabio/hybrid/", years[[i]], "_B.rds"))
 }
 
 stopCluster(cl)
