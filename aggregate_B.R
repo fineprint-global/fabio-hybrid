@@ -18,11 +18,11 @@ products <- c("Rice (Milled Equivalent)","Wheat and products","Barley and produc
 year=2013
 for(year in years){
   print(year)
-  Z <- readRDS(paste0("/mnt/nfs_fineprint/tmp/fabio/hybrid/",year,"_Z.rds"))
+  Z <- readRDS(paste0("/mnt/nfs_fineprint/tmp/fabio/hybrid/",year,"_B.rds"))
   Z <- t(Z)
   colnames(Z) <- paste0(rep(1:192, each = 130), "_", rep(products,192))
   Z <- t(agg(Z))
   
-  saveRDS(Z, paste0("/mnt/nfs_fineprint/tmp/fabio/hybrid/", year, "_B_120.rds"))
+  saveRDS(Z, paste0("/mnt/nfs_fineprint/tmp/fabio/120/hybrid/", year, "_B.rds"))
   
 }

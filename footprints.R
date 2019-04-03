@@ -21,27 +21,75 @@ year=2013
 # years <- 1995:2013
 
 load(paste0("/mnt/nfs_fineprint/tmp/exiobase/pxp/",year,"_Y.RData"))
-E <- readRDS(paste0("/mnt/nfs_fineprint/tmp/fabio/",year,"_E.rds"))
-X <- readRDS(paste0("/mnt/nfs_fineprint/tmp/fabio/",year,"_X.rds"))
-L <- readRDS(paste0("/mnt/nfs_fineprint/tmp/fabio/hybrid/",year,"_L_120.rds"))
+E <- readRDS(paste0("/mnt/nfs_fineprint/tmp/fabio/120/",year,"_E.rds"))
+X <- readRDS(paste0("/mnt/nfs_fineprint/tmp/fabio/120/",year,"_X.rds"))
 
 X[X<0] <- 0
-e <- c(as.vector(E$Landuse) / X, rep(0,nrow(Y)))
+# e <- c(as.vector(E$Landuse) / X, rep(0,nrow(Y)))
+e <- as.vector(E$Landuse) / X
 e[!is.finite(e)] <- 0
-MP <- e * L
 
 # aggregate countries in Y
 colnames(Y) <- rep(1:49, each = 7)
 Y <- agg(Y)
-Y <- rbind(matrix(0,nrow(E),49),Y)
+# Y <- rbind(matrix(0,nrow(E),49),Y)
 
-# Total EU Footprint
+
+#--------------------------
+# mass-based allocation
+#--------------------------
+L <- readRDS(paste0("/mnt/nfs_fineprint/tmp/fabio/120/hybrid/",year,"_B_inv_mass.rds"))
+# calculate multipliers
+MP <- e * L
+# calculate footprints
 FP <- MP %*% Y
 FP <- t(FP)
-colnames(FP) <- c(rep(1:192, each = 120), rep(192,9800))
+colnames(FP) <- rep(1:192, each = 120)
 FP <- agg(FP)
 FP <- t(FP)
 
+# write results
 rownames(FP) <- regions$Country
 colnames(FP) <- regions_exio$EXIOregion
-write.csv2(FP, "footprints_2013.csv")
+write.csv2(FP, "footprints_2013_mass.csv")
+
+#--------------------------
+# price-based allocation
+#--------------------------
+L <- readRDS(paste0("/mnt/nfs_fineprint/tmp/fabio/120/hybrid/",year,"_B_inv_price.rds"))
+# calculate multipliers
+MP <- e * L
+# calculate footprints
+FP <- MP %*% Y
+FP <- t(FP)
+colnames(FP) <- rep(1:192, each = 120)
+FP <- agg(FP)
+FP <- t(FP)
+
+# write results
+rownames(FP) <- regions$Country
+colnames(FP) <- regions_exio$EXIOregion
+write.csv2(FP, "footprints_2013_price.csv")
+
+
+
+
+#--------------------------
+# price-based allocation FP EU
+#--------------------------
+L <- readRDS(paste0("/mnt/nfs_fineprint/tmp/fabio/120/hybrid/",year,"_B_inv_price.rds"))
+# calculate multipliers
+MP <- e * L
+# calculate footprints
+FP <- MP %*% rowSums(Y[,1:28])
+
+# write results
+data <- data.frame(item = substr(rownames(FP)[1:120],3,100),
+                   country = rep(regions$Country, each=120),
+                   continent = rep(regions$Continent, each=120),
+                   value = FP[,1])
+
+data <- data[data$value!=0,]
+# data <- reshape2::dcast(data, item ~ country)
+# data[is.na(data)] <- 0
+write.csv2(data, "footprints_non-food_EU_2013_hectares_price.csv")
