@@ -21,8 +21,8 @@ year=2013
 # years <- 1995:2013
 
 load(paste0("/mnt/nfs_fineprint/tmp/exiobase/pxp/",year,"_Y.RData"))
-E <- readRDS(paste0("/mnt/nfs_fineprint/tmp/fabio/120/",year,"_E.rds"))
-X <- readRDS(paste0("/mnt/nfs_fineprint/tmp/fabio/120/",year,"_X.rds"))
+E <- readRDS(paste0("/mnt/nfs_fineprint/tmp/fabio/",year,"_E.rds"))
+X <- readRDS(paste0("/mnt/nfs_fineprint/tmp/fabio/",year,"_X.rds"))
 
 X[X<0] <- 0
 # e <- c(as.vector(E$Landuse) / X, rep(0,nrow(Y)))
@@ -36,9 +36,28 @@ Y <- agg(Y)
 
 
 #--------------------------
+# 130 products version
+#--------------------------
+L <- readRDS(paste0("/mnt/nfs_fineprint/tmp/fabio/hybrid/",year,"_B.rds"))
+# calculate multipliers
+MP <- e * L
+# calculate footprints
+FP <- MP %*% Y
+FP <- t(FP)
+colnames(FP) <- rep(1:192, each = 130)
+FP <- agg(FP)
+FP <- t(FP)
+
+# write results
+rownames(FP) <- regions$Country
+colnames(FP) <- regions_exio$EXIOregion
+write.csv2(FP, "footprints_2013_mass.csv")
+sum(FP)
+
+#--------------------------
 # mass-based allocation
 #--------------------------
-L <- readRDS(paste0("/mnt/nfs_fineprint/tmp/fabio/120/hybrid/",year,"_B_inv_mass.rds"))
+L <- readRDS(paste0("/mnt/nfs_fineprint/tmp/fabio/hybrid/",year,"_B_inv_mass.rds"))
 # calculate multipliers
 MP <- e * L
 # calculate footprints

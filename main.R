@@ -27,7 +27,7 @@ hybridise <- function(year, Sup, Use, Cou) {
   require(Matrix) # Necessary for forked processes
   
   # Read EXIOBASE Z and FABIO Y
-  load(paste0("/mnt/nfs_fineprint/tmp/fabio/", year, "_Y.RData"))
+  Y <- readRDS(paste0("/mnt/nfs_fineprint/tmp/fabio/", year, "_Y.rds"))
   if(year<1995){
     load(paste0("/mnt/nfs_fineprint/tmp/exiobase/pxp/1995_Z.RData"))
   } else {
@@ -48,25 +48,25 @@ hybridise <- function(year, Sup, Use, Cou) {
   Oth <- Y[, grep("OtherUses$", colnames(Y))]
   rm(Y, Z)
   
-  # Create matrix for country matching
-  A <- Oth %*% Cou
+  # Match FABIO countries with EXIOBASE countries and restructure the Other use matrix
+  Oth <- Oth %*% Cou
   
   # Create matrix for sector matching
-  B <- vector("list", 49)
+  T <- vector("list", 49)
   for(i in 1:49) {
-    B[[i]] <- Sup %*% Tec[[i]] * Use
-    B[[i]] <- B[[i]] / rowSums(B[[i]])
-    B[[i]][is.na(B[[i]])] <- 0
+    T[[i]] <- Sup %*% Tec[[i]] * Use
+    T[[i]] <- T[[i]] / rowSums(T[[i]])
+    T[[i]][is.na(T[[i]])] <- 0
   }
   
-  # Compute the hybrid part from A and B
-  C <- Matrix(0, nrow = 192 * 130, ncol = 49 * 200, sparse = TRUE)
+  # Compute the hybrid part from Oth and T
+  B <- Matrix(0, nrow = 192 * 130, ncol = 49 * 200, sparse = TRUE)
   for(i in 1:49) {
-    C[, (1 + 200 * (i - 1)):(200 * i)] <-
-      do.call(rbind, replicate(192, B[[i]], simplify = FALSE)) * A[, i]
+    B[, (1 + 200 * (i - 1)):(200 * i)] <-
+      do.call(rbind, replicate(192, T[[i]], simplify = FALSE)) * Oth[, i]
   }
 
-  C
+  B
 }
 
 
