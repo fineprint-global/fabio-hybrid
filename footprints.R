@@ -21,8 +21,8 @@ year=2013
 # years <- 1995:2013
 
 load(paste0("/mnt/nfs_fineprint/tmp/exiobase/pxp/",year,"_Y.RData"))
-E <- readRDS(paste0("/mnt/nfs_fineprint/tmp/fabio/",year,"_E.rds"))
-X <- readRDS(paste0("/mnt/nfs_fineprint/tmp/fabio/",year,"_X.rds"))
+E <- readRDS(paste0("/mnt/nfs_fineprint/tmp/fabio/v2/",year,"_E.rds"))
+X <- readRDS(paste0("/mnt/nfs_fineprint/tmp/fabio/v2/",year,"_X.rds"))
 
 X[X<0] <- 0
 # e <- c(as.vector(E$Landuse) / X, rep(0,nrow(Y)))
@@ -57,7 +57,7 @@ sum(FP)
 #--------------------------
 # mass-based allocation
 #--------------------------
-L <- readRDS(paste0("/mnt/nfs_fineprint/tmp/fabio/hybrid/",year,"_B_inv_mass.rds"))
+L <- readRDS(paste0("/mnt/nfs_fineprint/tmp/fabio/v2/hybrid/",year,"_B_inv_mass.rds"))
 # calculate multipliers
 MP <- e * L
 # calculate footprints
@@ -75,13 +75,13 @@ write.csv2(FP, "footprints_2013_mass.csv")
 #--------------------------
 # price-based allocation
 #--------------------------
-L <- readRDS(paste0("/mnt/nfs_fineprint/tmp/fabio/120/hybrid/",year,"_B_inv_price.rds"))
+L <- readRDS(paste0("/mnt/nfs_fineprint/tmp/fabio/v2/hybrid/",year,"_B_inv_value.rds"))
 # calculate multipliers
 MP <- e * L
 # calculate footprints
 FP <- MP %*% Y
 FP <- t(FP)
-colnames(FP) <- rep(1:192, each = 120)
+colnames(FP) <- rep(1:192, each = 125)
 FP <- agg(FP)
 FP <- t(FP)
 
@@ -96,16 +96,16 @@ write.csv2(FP, "footprints_2013_price.csv")
 #--------------------------
 # price-based allocation FP EU
 #--------------------------
-L <- readRDS(paste0("/mnt/nfs_fineprint/tmp/fabio/120/hybrid/",year,"_B_inv_price.rds"))
+L <- readRDS(paste0("/mnt/nfs_fineprint/tmp/fabio/v2/hybrid/",year,"_B_inv_price.rds"))
 # calculate multipliers
 MP <- e * L
 # calculate footprints
 FP <- MP %*% rowSums(Y[,1:28])
 
 # write results
-data <- data.frame(item = substr(rownames(FP)[1:120],3,100),
-                   country = rep(regions$Country, each=120),
-                   continent = rep(regions$Continent, each=120),
+data <- data.frame(item = substr(rownames(FP)[1:125],3,100),
+                   country = rep(regions$Country, each=125),
+                   continent = rep(regions$Continent, each=125),
                    value = FP[,1])
 
 data <- data[data$value!=0,]
