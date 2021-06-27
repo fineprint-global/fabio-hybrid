@@ -6,7 +6,7 @@ use <- readODS::read_ods("/mnt/nfs_fineprint/tmp/fabio/v2/hybrid/fabio-exiobase.
 conc <- readODS::read_ods("/mnt/nfs_fineprint/tmp/fabio/v2/hybrid/fabio-exiobase.ods", sheet = 3)
 conc$FABIO_code <- 1:nrow(conc)
 # Move NAs to extra column to drop, allocate at some point
-conc$EXIOBASE_code[is.na(conc$EXIOBASE_code)] <- 50 
+conc$EXIOBASE_code[is.na(conc$EXIOBASE_code)] <- 50
 
 as_matrix <- function(x) {
   y <- as.matrix(x[5:ncol(x)])
