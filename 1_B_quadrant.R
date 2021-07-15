@@ -79,7 +79,7 @@ hybridise <- function(year, Sup, Use, Cou, Y_all) {
 versions <- c("", "losses/", "wood/")
 version <- versions[1]
 
-for(version in versions){
+for(version in versions[1:2]){
   Y_all <- readRDS(paste0("/mnt/nfs_fineprint/tmp/fabio/v2/", version, "Y.rds"))
   
   # Setup to process in parallel
@@ -97,6 +97,8 @@ for(version in versions){
   }
   
   parallel::stopCluster(cl)
+  
+  rm(cl, Y_all, n_cores, years, output); gc()
   
   # # Alternatively run a loop
   # for(year in years){
