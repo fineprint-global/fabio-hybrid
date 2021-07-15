@@ -12,7 +12,7 @@ years <- 1986:2013
 versions <- c("","losses/","wood/")
 version="losses/"
 
-for(version in versions[1:2]){
+for(version in versions){
   for(year in years){
     print(paste0(version,year))
     

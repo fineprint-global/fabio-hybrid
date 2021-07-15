@@ -2,9 +2,12 @@ library(Matrix)
 library(parallel)
 
 # Matrices necessary
-sup <- readODS::read_ods("/mnt/nfs_fineprint/tmp/fabio/v2/hybrid/fabio-exiobase.ods", sheet = 1, skip = 1)
-use <- readODS::read_ods("/mnt/nfs_fineprint/tmp/fabio/v2/hybrid/fabio-exiobase.ods", sheet = 2, skip = 1)
-conc <- readODS::read_ods("/mnt/nfs_fineprint/tmp/fabio/v2/hybrid/fabio-exiobase.ods", sheet = 3)
+# sup <- readODS::read_ods("/mnt/nfs_fineprint/tmp/fabio/v2/hybrid/fabio-exiobase.ods", sheet = 1, skip = 1)
+# use <- readODS::read_ods("/mnt/nfs_fineprint/tmp/fabio/v2/hybrid/fabio-exiobase.ods", sheet = 2, skip = 1)
+# conc <- readODS::read_ods("/mnt/nfs_fineprint/tmp/fabio/v2/hybrid/fabio-exiobase.ods", sheet = 3)
+sup <- read.csv("fabio-exio_sup.csv")
+use <- read.csv("fabio-exio_use.csv")
+conc <- read.csv("fabio-exio_conc.csv")
 conc$FABIO_code <- 1:nrow(conc)
 # Move NAs to extra column to drop, allocate at some point
 conc$EXIOBASE_code[is.na(conc$EXIOBASE_code)] <- 50
@@ -51,17 +54,18 @@ hybridise <- function(year, Sup, Use, Cou, Y_all) {
   
   # Match FABIO countries with EXIOBASE countries and restructure the Other use matrix
   Oth <- Oth %*% Cou
+  nprod <- nrow(Oth) / 192
   
   # Create matrix for sector matching
   T <- vector("list", 49)
   for(i in 1:49) {
-    T[[i]] <- Sup %*% Tec[[i]] * Use
+    T[[i]] <- Sup[1:nprod,] %*% Tec[[i]] * Use[1:nprod,]
     T[[i]] <- T[[i]] / rowSums(T[[i]])
     T[[i]][is.na(T[[i]])] <- 0
   }
   
   # Compute the hybrid part from Oth and T
-  B <- Matrix(0, nrow = 192 * 125, ncol = 49 * 200, sparse = TRUE)
+  B <- Matrix(0, nrow = 192 * nprod, ncol = 49 * 200, sparse = TRUE)
   for(i in 1:49) {
     B[, (1 + 200 * (i - 1)):(200 * i)] <-
       do.call(rbind, replicate(192, T[[i]], simplify = FALSE)) * Oth[, i]
@@ -79,7 +83,7 @@ hybridise <- function(year, Sup, Use, Cou, Y_all) {
 versions <- c("", "losses/", "wood/")
 version <- versions[1]
 
-for(version in versions[1:2]){
+for(version in versions){
   Y_all <- readRDS(paste0("/mnt/nfs_fineprint/tmp/fabio/v2/", version, "Y.rds"))
   
   # Setup to process in parallel
