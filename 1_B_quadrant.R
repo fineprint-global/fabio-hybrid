@@ -1,4 +1,5 @@
 library(Matrix)
+library(parallel)
 
 # Matrices necessary
 sup <- readODS::read_ods("/mnt/nfs_fineprint/tmp/fabio/v2/hybrid/fabio-exiobase.ods", sheet = 1, skip = 1)
@@ -20,7 +21,6 @@ Sup <- as_matrix(sup)
 Use <- as_matrix(use)
 Cou_NA <- sparseMatrix(i = conc$FABIO_code, j = conc$EXIOBASE_code) * 1
 Cou <- Cou_NA[, 1:49] # Remove 50th column of countries missing in EXIOBASE
-Y_all <- readRDS(paste0("/mnt/nfs_fineprint/tmp/fabio/v2/Y.rds"))
 
 # Function to create the hybrid part for a certain year
 hybridise <- function(year, Sup, Use, Cou, Y_all) {
@@ -71,28 +71,38 @@ hybridise <- function(year, Sup, Use, Cou, Y_all) {
 }
 
 
+
+
 # Execute -----------------------------------------------------------------
 
-# Setup to process in parallel
-library(parallel)
-n_cores <- detectCores() - 2
-cl <- makeCluster(n_cores)
+# Select fabio version or run loop
+versions <- c("", "losses/", "wood/")
+version <- versions[1]
 
-# Years to calculate hybridised FABIO for
-years <- 1986:2013
-
-output <- parLapply(cl, years, hybridise, Sup, Use, Cou, Y_all)
-
-for(i in seq_along(output)) {
-  saveRDS(output[[i]], 
-          paste0("/mnt/nfs_fineprint/tmp/fabio/v2/hybrid/", years[[i]], "_B.rds"))
+for(version in versions){
+  Y_all <- readRDS(paste0("/mnt/nfs_fineprint/tmp/fabio/v2/", version, "Y.rds"))
+  
+  # Setup to process in parallel
+  n_cores <- parallel::detectCores() - 2
+  cl <- parallel::makeCluster(n_cores)
+  
+  # Years to calculate hybridised FABIO for
+  years <- 1986:2013
+  
+  output <- parallel::parLapply(cl, years, hybridise, Sup, Use, Cou, Y_all)
+  
+  for(i in seq_along(output)) {
+    saveRDS(output[[i]], 
+            paste0("/mnt/nfs_fineprint/tmp/fabio/v2/hybrid/", version, years[[i]], "_B.rds"))
+  }
+  
+  parallel::stopCluster(cl)
+  
+  # # Alternatively run a loop
+  # for(year in years){
+  #   saveRDS(hybridise(year, Sup, Use, Cou, Y_all), 
+  #           paste0("/mnt/nfs_fineprint/tmp/fabio/v2/hybrid/", version, year, "_B.rds"))
+  # }
 }
 
-stopCluster(cl)
 
-
-# Alternatively run a loop
-for(year in 2013:1986){
-  saveRDS(hybridise(year, Sup, Use, Cou, Y_all), 
-          paste0("/mnt/nfs_fineprint/tmp/fabio/v2/hybrid/", year, "_B.rds"))
-}
