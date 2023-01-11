@@ -1,13 +1,12 @@
 library(Matrix)
 library(parallel)
 
+vers <- "v1.1" # "v1.2"
+
 # Matrices necessary
-# sup <- readODS::read_ods("/mnt/nfs_fineprint/tmp/fabio/v2/hybrid/fabio-exiobase.ods", sheet = 1, skip = 1)
-# use <- readODS::read_ods("/mnt/nfs_fineprint/tmp/fabio/v2/hybrid/fabio-exiobase.ods", sheet = 2, skip = 1)
-# conc <- readODS::read_ods("/mnt/nfs_fineprint/tmp/fabio/v2/hybrid/fabio-exiobase.ods", sheet = 3)
-sup <- read.csv("fabio-exio_sup.csv")
-use <- read.csv("fabio-exio_use.csv")
-conc <- read.csv("fabio-exio_conc.csv")
+sup <- read.csv(paste0("fabio-exio_sup_",vers,".csv"))
+use <- read.csv(paste0("fabio-exio_use_",vers,".csv"))
+conc <- read.csv(paste0("fabio-exio_conc_",vers,".csv"))
 conc$FABIO_code <- 1:nrow(conc)
 # Move NAs to extra column to drop, allocate at some point
 conc$EXIOBASE_code[is.na(conc$EXIOBASE_code)] <- 50
@@ -84,7 +83,7 @@ versions <- c("", "losses/", "wood/")
 version <- versions[1]
 
 for(version in versions){
-  Y_all <- readRDS(paste0("/mnt/nfs_fineprint/tmp/fabio/v2/", version, "Y.rds"))
+  Y_all <- readRDS(paste0("/mnt/nfs_fineprint/tmp/fabio/",vers,"/", version, "Y.rds"))
   
   # Setup to process in parallel
   n_cores <- parallel::detectCores() - 2
@@ -97,7 +96,7 @@ for(version in versions){
   
   for(i in seq_along(output)) {
     saveRDS(output[[i]], 
-            paste0("/mnt/nfs_fineprint/tmp/fabio/v2/hybrid/", version, years[[i]], "_B.rds"))
+            paste0("/mnt/nfs_fineprint/tmp/fabio/",vers,"/hybrid/", version, years[[i]], "_B.rds"))
   }
   
   parallel::stopCluster(cl)
@@ -107,7 +106,7 @@ for(version in versions){
   # # Alternatively run a loop
   # for(year in years){
   #   saveRDS(hybridise(year, Sup, Use, Cou, Y_all), 
-  #           paste0("/mnt/nfs_fineprint/tmp/fabio/v2/hybrid/", version, year, "_B.rds"))
+  #           paste0("/mnt/nfs_fineprint/tmp/fabio/",vers,"/hybrid/", version, year, "_B.rds"))
   # }
 }
 

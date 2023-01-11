@@ -7,6 +7,7 @@
 
 library(Matrix)
 
+vers <- "v1.1" # "v1.2"
 year=2013
 years <- 1986:2013
 versions <- c("","losses/","wood/")
@@ -27,19 +28,19 @@ for(version in versions){
     D_inv <- L
     rm(L); gc()
     
-    B <- readRDS(paste0("/mnt/nfs_fineprint/tmp/fabio/v2/hybrid/", year, "_B.rds"))
+    B <- readRDS(paste0("/mnt/nfs_fineprint/tmp/fabio/",vers,"/hybrid/", version, year, "_B.rds"))
     B <- t(t(B)/x)
     B[!is.finite(B)] <- 0
     B[B<0] <- 0
     B <- 0-B
     
-    A_inv <- readRDS(paste0("/mnt/nfs_fineprint/tmp/fabio/v2/", version, year, "_L_mass.rds"))
+    A_inv <- readRDS(paste0("/mnt/nfs_fineprint/tmp/fabio/",vers,"/", version, year, "_L_mass.rds"))
     B_inv <- -A_inv %*% B %*% D_inv
-    saveRDS(B_inv, paste0("/mnt/nfs_fineprint/tmp/fabio/v2/hybrid/", version, year, "_B_inv_mass.rds"))
+    saveRDS(B_inv, paste0("/mnt/nfs_fineprint/tmp/fabio/",vers,"/hybrid/", version, year, "_B_inv_mass.rds"))
     
-    A_inv <- readRDS(paste0("/mnt/nfs_fineprint/tmp/fabio/v2/", version, year, "_L_value.rds"))
+    A_inv <- readRDS(paste0("/mnt/nfs_fineprint/tmp/fabio/",vers,"/", version, year, "_L_value.rds"))
     B_inv <- -A_inv %*% B %*% D_inv
-    saveRDS(B_inv, paste0("/mnt/nfs_fineprint/tmp/fabio/v2/hybrid/", version, year, "_B_inv_value.rds"))
+    saveRDS(B_inv, paste0("/mnt/nfs_fineprint/tmp/fabio/",vers,"/hybrid/", version, year, "_B_inv_value.rds"))
     
   }
 }
