@@ -1,12 +1,12 @@
 library(Matrix)
 library(parallel)
 
-vers <- "v1.1" # "v1.2"
+vers <- "v1.2" # "v1.1"
 
 # Matrices necessary
-sup <- read.csv(paste0("fabio-exio_sup_",vers,".csv"))
-use <- read.csv(paste0("fabio-exio_use_",vers,".csv"))
-conc <- read.csv(paste0("fabio-exio_conc_",vers,".csv"))
+sup <- read.csv(paste0("inst/fabio-exio_sup_",vers,".csv"))
+use <- read.csv(paste0("inst/fabio-exio_use_",vers,".csv"))
+conc <- read.csv(paste0("inst/fabio-exio_reg_",vers,".csv"))
 conc$FABIO_code <- 1:nrow(conc)
 # Move NAs to extra column to drop, allocate at some point
 conc$EXIOBASE_code[is.na(conc$EXIOBASE_code)] <- 50
@@ -33,6 +33,8 @@ hybridise <- function(year, Sup, Use, Cou, Y_all) {
   Y <- Y_all[[as.character(year)]]
   if(year<1995){
     load(paste0("/mnt/nfs_fineprint/tmp/exiobase/pxp/1995_Z.RData"))
+  } else if(year>2016) {
+    load(paste0("/mnt/nfs_fineprint/tmp/exiobase/pxp/2016_Z.RData"))
   } else {
     load(paste0("/mnt/nfs_fineprint/tmp/exiobase/pxp/", year, "_Z.RData"))
   }
@@ -79,7 +81,7 @@ hybridise <- function(year, Sup, Use, Cou, Y_all) {
 # Execute -----------------------------------------------------------------
 
 # Select fabio version or run loop
-versions <- c("", "losses/", "wood/")
+versions <- c("", "losses/")
 version <- versions[1]
 
 for(version in versions){
@@ -90,7 +92,7 @@ for(version in versions){
   cl <- parallel::makeCluster(n_cores)
   
   # Years to calculate hybridised FABIO for
-  years <- 1986:2013
+  years <- 1986:2020
   
   output <- parallel::parLapply(cl, years, hybridise, Sup, Use, Cou, Y_all)
   

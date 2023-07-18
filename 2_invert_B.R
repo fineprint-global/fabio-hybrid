@@ -7,10 +7,10 @@
 
 library(Matrix)
 
-vers <- "v1.1" # "v1.2"
+vers <- "v1.2" # "v1.1"
 year=2013
-years <- 1986:2013
-versions <- c("","losses/","wood/")
+years <- 1986:2020
+versions <- c("","losses/")
 version="losses/"
 
 for(version in versions){
@@ -20,6 +20,9 @@ for(version in versions){
     if(year<1995){
       load(paste0("/mnt/nfs_fineprint/tmp/exiobase/pxp/1995_L.RData"))
       load(paste0("/mnt/nfs_fineprint/tmp/exiobase/pxp/1995_x.RData"))
+    } else if(year>2016) {
+      load(paste0("/mnt/nfs_fineprint/tmp/exiobase/pxp/2016_L.RData"))
+      load(paste0("/mnt/nfs_fineprint/tmp/exiobase/pxp/2016_x.RData"))
     } else {
       load(paste0("/mnt/nfs_fineprint/tmp/exiobase/pxp/", year, "_x.RData"))
       load(paste0("/mnt/nfs_fineprint/tmp/exiobase/pxp/", year, "_L.RData"))

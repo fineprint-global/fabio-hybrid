@@ -1,0 +1,193 @@
+"FAO_code","Country","ISO","EXIOBASE","EXIOBASE_code","FABIO_code"
+1,"Armenia","ARM","RoW Asia and Pacific",45,1
+2,"Afghanistan","AFG","RoW Asia and Pacific",45,2
+3,"Albania","ALB","RoW Europe",47,3
+4,"Algeria","DZA","RoW Africa",48,4
+7,"Angola","AGO","RoW Africa",48,5
+8,"Antigua and Barbuda","ATG","RoW America",46,6
+9,"Argentina","ARG","RoW America",46,7
+10,"Australia","AUS","Australia",38,8
+11,"Austria","AUT","Austria",1,9
+12,"Bahamas","BHS","RoW America",46,10
+13,"Bahrain","BHR","RoW Middle East",49,11
+14,"Barbados","BRB","RoW America",46,12
+15,"Belgium-Luxembourg","BLX",NA,50,13
+16,"Bangladesh","BGD","RoW Asia and Pacific",45,14
+19,"Bolivia (Plurinational State of)","BOL","RoW America",46,15
+20,"Botswana","BWA","RoW Africa",48,16
+21,"Brazil","BRA","Brazil",34,17
+23,"Belize","BLZ","RoW America",46,18
+25,"Solomon Islands","SLB","RoW Asia and Pacific",45,19
+26,"Brunei Darussalam","BRN","RoW Asia and Pacific",45,20
+27,"Bulgaria","BGR","Bulgaria",3,21
+28,"Myanmar","MMR","RoW Asia and Pacific",45,22
+29,"Burundi","BDI","RoW Africa",48,23
+32,"Cameroon","CMR","RoW Africa",48,24
+33,"Canada","CAN","Canada",32,25
+35,"Cabo Verde","CPV","RoW Africa",48,26
+37,"Central African Republic","CAF","RoW Africa",48,27
+38,"Sri Lanka","LKA","RoW Asia and Pacific",45,28
+39,"Chad","TCD","RoW Africa",48,29
+40,"Chile","CHL","RoW America",46,30
+41,"China, mainland","CHN","China",31,31
+44,"Colombia","COL","RoW America",46,32
+46,"Congo","COG","RoW Africa",48,33
+48,"Costa Rica","CRI","RoW America",46,34
+49,"Cuba","CUB","RoW America",46,35
+50,"Cyprus","CYP","Cyprus",4,36
+51,"Czechoslovakia","CSK",NA,50,37
+52,"Azerbaijan","AZE","RoW Asia and Pacific",45,38
+53,"Benin","BEN","RoW Africa",48,39
+54,"Denmark","DNK","Denmark",7,40
+55,"Dominica","DMA","RoW America",46,41
+56,"Dominican Republic","DOM","RoW America",46,42
+57,"Belarus","BLR","RoW Europe",47,43
+58,"Ecuador","ECU","RoW America",46,44
+59,"Egypt","EGY","RoW Middle East",49,45
+60,"El Salvador","SLV","RoW America",46,46
+63,"Estonia","EST","Estonia",8,47
+66,"Fiji","FJI","RoW Asia and Pacific",45,48
+67,"Finland","FIN","Finland",10,49
+68,"France","FRA","France",11,50
+70,"French Polynesia","PYF","RoW Asia and Pacific",45,51
+72,"Djibouti","DJI","RoW Africa",48,52
+73,"Georgia","GEO","RoW Asia and Pacific",45,53
+74,"Gabon","GAB","RoW Africa",48,54
+75,"Gambia","GMB","RoW Africa",48,55
+79,"Germany","DEU","Germany",6,56
+80,"Bosnia and Herzegovina","BIH","RoW Europe",47,57
+81,"Ghana","GHA","RoW Africa",48,58
+83,"Kiribati","KIR","RoW Asia and Pacific",45,59
+84,"Greece","GRC","Greece",12,60
+86,"Grenada","GRD","RoW America",46,61
+89,"Guatemala","GTM","RoW America",46,62
+90,"Guinea","GIN","RoW Africa",48,63
+91,"Guyana","GUY","RoW America",46,64
+93,"Haiti","HTI","RoW America",46,65
+95,"Honduras","HND","RoW America",46,66
+96,"China, Hong Kong SAR","HKG","RoW Asia and Pacific",45,67
+97,"Hungary","HUN","Hungary",14,68
+98,"Croatia","HRV","Croatia",13,69
+99,"Iceland","ISL","RoW Europe",47,70
+100,"India","IND","India",35,71
+101,"Indonesia","IDN","Indonesia",43,72
+102,"Iran (Islamic Republic of)","IRN","RoW Middle East",49,73
+103,"Iraq","IRQ","RoW Middle East",49,74
+104,"Ireland","IRL","Ireland",15,75
+105,"Israel","ISR","RoW Middle East",49,76
+106,"Italy","ITA","Italy",16,77
+107,"Côte d'Ivoire","CIV","RoW Africa",48,78
+108,"Kazakhstan","KAZ","RoW Asia and Pacific",45,79
+109,"Jamaica","JAM","RoW America",46,80
+110,"Japan","JPN","Japan",30,81
+112,"Jordan","JOR","RoW Middle East",49,82
+113,"Kyrgyzstan","KGZ","RoW Asia and Pacific",45,83
+114,"Kenya","KEN","RoW Africa",48,84
+115,"Cambodia","KHM","RoW Asia and Pacific",45,85
+116,"Democratic People's Republic of Korea","PRK","RoW Asia and Pacific",45,86
+117,"Republic of Korea","KOR","South Korea",33,87
+118,"Kuwait","KWT","RoW Middle East",49,88
+119,"Latvia","LVA","Latvia",19,89
+120,"Lao People's Democratic Republic","LAO","RoW Asia and Pacific",45,90
+121,"Lebanon","LBN","RoW Middle East",49,91
+122,"Lesotho","LSO","RoW Africa",48,92
+123,"Liberia","LBR","RoW Africa",48,93
+124,"Libya","LBY","RoW Africa",48,94
+126,"Lithuania","LTU","Lithuania",17,95
+128,"China, Macao SAR","MAC","RoW Asia and Pacific",45,96
+129,"Madagascar","MDG","RoW Africa",48,97
+130,"Malawi","MWI","RoW Africa",48,98
+131,"Malaysia","MYS","RoW Asia and Pacific",45,99
+132,"Maldives","MDV","RoW Asia and Pacific",45,100
+133,"Mali","MLI","RoW Africa",48,101
+134,"Malta","MLT","Malta",20,102
+136,"Mauritania","MRT","RoW Africa",48,103
+137,"Mauritius","MUS","RoW Africa",48,104
+138,"Mexico","MEX","Mexico",36,105
+141,"Mongolia","MNG","RoW Asia and Pacific",45,106
+143,"Morocco","MAR","RoW Africa",48,107
+144,"Mozambique","MOZ","RoW Africa",48,108
+146,"Republic of Moldova","MDA","RoW Europe",47,109
+147,"Namibia","NAM","RoW Africa",48,110
+149,"Nepal","NPL","RoW Asia and Pacific",45,111
+150,"Netherlands","NLD","Netherlands",21,112
+151,"Netherlands Antilles","ANT","RoW America",46,113
+153,"New Caledonia","NCL","RoW Asia and Pacific",45,114
+154,"The former Yugoslav Republic of Macedonia","MKD",NA,47,115
+155,"Vanuatu","VUT","RoW Asia and Pacific",45,116
+156,"New Zealand","NZL","RoW Asia and Pacific",45,117
+157,"Nicaragua","NIC","RoW America",46,118
+158,"Niger","NER","RoW Africa",48,119
+159,"Nigeria","NGA","RoW Africa",48,120
+162,"Norway","NOR","Norway",42,121
+165,"Pakistan","PAK","RoW Asia and Pacific",45,122
+166,"Panama","PAN","RoW America",46,123
+167,"Czech Republic","CZE","Czech Republic",5,124
+168,"Papua New Guinea","PNG","RoW Asia and Pacific",45,125
+169,"Paraguay","PRY","RoW America",46,126
+170,"Peru","PER","RoW America",46,127
+171,"Philippines","PHL","RoW Asia and Pacific",45,128
+173,"Poland","POL","Poland",22,129
+174,"Portugal","PRT","Portugal",23,130
+175,"Guinea-Bissau","GNB","RoW Africa",48,131
+176,"Timor-Leste","TLS","RoW Asia and Pacific",45,132
+177,"Puerto Rico","PRI","RoW America",46,133
+178,"Eritrea","ERI","RoW Africa",48,134
+179,"Qatar","QAT","RoW Middle East",49,135
+181,"Zimbabwe","ZWE","RoW Africa",48,136
+183,"Romania","ROU","Romania",24,137
+184,"Rwanda","RWA","RoW Africa",48,138
+185,"Russian Federation","RUS","Russia",37,139
+186,"Serbia and Montenegro","SCG",NA,50,140
+188,"Saint Kitts and Nevis","KNA","RoW America",46,141
+189,"Saint Lucia","LCA","RoW America",46,142
+191,"Saint Vincent and the Grenadines","VCT","RoW America",46,143
+193,"Sao Tome and Principe","STP","RoW Africa",48,144
+194,"Saudi Arabia","SAU","RoW Middle East",49,145
+195,"Senegal","SEN","RoW Africa",48,146
+197,"Sierra Leone","SLE","RoW Africa",48,147
+198,"Slovenia","SVN","Slovenia",26,148
+199,"Slovakia","SVK","Slovakia",27,149
+200,"Singapore","SGP","RoW Asia and Pacific",45,150
+201,"Somalia","SOM","RoW Africa",48,151
+202,"South Africa","ZAF","South Africa",44,152
+203,"Spain","ESP","Spain",9,153
+207,"Suriname","SUR","RoW America",46,154
+208,"Tajikistan","TJK","RoW Asia and Pacific",45,155
+209,"Swaziland","SWZ","RoW Africa",48,156
+210,"Sweden","SWE","Sweden",25,157
+211,"Switzerland","CHE","Switzerland",39,158
+212,"Syrian Arab Republic","SYR","RoW Middle East",49,159
+213,"Turkmenistan","TKM","RoW Asia and Pacific",45,160
+214,"China, Taiwan Province of","TWN","RoW Asia and Pacific",41,161
+215,"United Republic of Tanzania","TZA","RoW Africa",48,162
+216,"Thailand","THA","RoW Asia and Pacific",45,163
+217,"Togo","TGO","RoW Africa",48,164
+220,"Trinidad and Tobago","TTO","RoW America",46,165
+221,"Oman","OMN","RoW Middle East",49,166
+222,"Tunisia","TUN","RoW Africa",48,167
+223,"Turkey","TUR","Turkey",40,168
+225,"United Arab Emirates","ARE","RoW Middle East",49,169
+226,"Uganda","UGA","RoW Africa",48,170
+228,"USSR","SUN",NA,50,171
+229,"United Kingdom","GBR","United Kingdom",28,172
+230,"Ukraine","UKR","RoW Europe",47,173
+231,"United States of America","USA","United States",29,174
+233,"Burkina Faso","BFA","RoW Africa",48,175
+234,"Uruguay","URY","RoW America",46,176
+235,"Uzbekistan","UZB","RoW Asia and Pacific",45,177
+236,"Venezuela (Bolivarian Republic of)","VEN","RoW America",46,178
+237,"Viet Nam","VNM","RoW Asia and Pacific",45,179
+238,"Ethiopia","ETH","RoW Africa",48,180
+244,"Samoa","WSM","RoW Asia and Pacific",45,181
+248,"Yugoslav SFR","YUG",NA,50,182
+249,"Yemen","YEM","RoW Middle East",49,183
+250,"Democratic Republic of the Congo","COD","RoW Africa",48,184
+251,"Zambia","ZMB","RoW Africa",48,185
+255,"Belgium","BEL","Belgium",2,186
+256,"Luxembourg","LUX","Luxembourg",18,187
+272,"Serbia","SRB","RoW Europe",47,188
+273,"Montenegro","MNE","RoW Europe",47,189
+276,"Sudan","SDN","RoW Africa",48,190
+277,"South Sudan","SSD","RoW Africa",48,191
+999,"RoW","ROW",NA,50,192
