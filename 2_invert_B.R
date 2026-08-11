@@ -1,7 +1,10 @@
 ################################
 # invert B
+# Performance note: it is critical to check that matrix multiplications are appropriately done as sparse x sparse or dense x dense format. Sparse x dense => dense implicit conversion is slow on the server. 
+# Explicit sparse -> dense conversions are thus added due to these prerformance concerns. Implicit conversion/sparse-first version of relevant code is kept for reference
+# execution time is expected to be 3-5 min/year (mass/value versions combined) on the server, down from ~22:30 before
 ################################
-# Block matrix inversion:
+# Formula: Block matrix inversion:
 # B^-1 = -(A - BD^-1C)^-1 BD^-1
 # for C = 0 -->  B^-1 = -A^-1 BD^-1
 
@@ -13,7 +16,6 @@ hybrid_model <- "gloria" #"exio"
 years <- 2010:2023
 versions <- c("","losses/")
 versions = versions[1]
-# version = versions[1] # TODO: rename, is not ideal for debugging
 
 for(version in versions){
   for(year in years){
@@ -21,19 +23,8 @@ for(version in versions){
     print(Sys.time())
     
     if (hybrid_model == "exio") {
-      if(year<1995){
-        load(paste0("/mnt/nfs_fineprint/tmp/exiobase/pxp/1995_L.RData"))
-        load(paste0("/mnt/nfs_fineprint/tmp/exiobase/pxp/1995_x.RData"))
-      } else if(year>2016) {
-        load(paste0("/mnt/nfs_fineprint/tmp/exiobase/pxp/2016_L.RData"))
-        load(paste0("/mnt/nfs_fineprint/tmp/exiobase/pxp/2016_x.RData"))
-      } else {
-        load(paste0("/mnt/nfs_fineprint/tmp/exiobase/pxp/", year, "_x.RData"))
-        load(paste0("/mnt/nfs_fineprint/tmp/exiobase/pxp/", year, "_L.RData"))
-      }
-      
-      D_inv <- L
-      rm(L); gc()
+      D_inv <- readRDS(paste0("/mnt/nfs_fineprint/tmp/exiobase/v3.10/pxp/IOT_", year, "_pxp/L.rds"))
+      x <- readRDS(paste0("/mnt/nfs_fineprint/tmp/exiobase/v3.10/pxp/IOT_", year, "_pxp/x.rds"))
     }
     
     if (hybrid_model == "gloria") {
@@ -43,10 +34,7 @@ for(version in versions){
     
     B <- readRDS(paste0("/mnt/nfs_fineprint/tmp/fabio/",vers,"/hybrid/", hybrid_model, "/", version, year, "_B.rds"))
     
-    # Ensure the matrix is sparse
-    # D_inv <- as(D_inv, "sparseMatrix")
-    
-    # print("Division")
+    # Original implicit formula
     # print(Sys.time())
     # B <- t(t(B)/x)
     # 
@@ -56,7 +44,7 @@ for(version in versions){
     # B[B<0] <- 0
     # B <- 0-B
     
-    # sparse-optimized version of the calulation above
+    # sparse-optimized version of the calculation above
     print("Division")
     print(Sys.time())
     
@@ -64,9 +52,7 @@ for(version in versions){
     x_inv <- 1 / x
     x_inv[!is.finite(x_inv)] <- 0
     B <- B %*% Diagonal(x = x_inv)
-    
-    # Verify sparsity was preserved
-    stopifnot(inherits(B, "CsparseMatrix"))
+    stopifnot(inherits(B, "CsparseMatrix")) # Verify sparsity was preserved
     
     print("Filtering")
     print(Sys.time())
@@ -83,10 +69,16 @@ for(version in versions){
     print(Sys.time())
     A_inv <- readRDS(paste0("/mnt/nfs_fineprint/tmp/fabio/",vers,"/", version, year, "_L_mass.rds"))
     
-    print("second calculation (mass)")
+    print("Matrix multiplication (mass)")
     print(Sys.time())
-    B_inv <- -A_inv %*% B %*% D_inv
     
+    # Original formula: B_inv <- -A_inv %*% B %*% D_inv .. with added explicit sparse => dense conversion
+    B_inv <- as(-A_inv %*% B, "denseMatrix") %*% D_inv
+    
+    # this performs the following without allocating a new object:
+    # A_inv_mult_B <- as.matrix(A_inv %*% B)
+    # B_inv <- -(A_inv_mult_B %*% D_inv)
+   
     rm(A_inv)
     gc(verbose = FALSE)
     
@@ -97,10 +89,10 @@ for(version in versions){
     rm(B_inv)
     gc(verbose = FALSE)
     
-    print("third calculation (value)")
+    print("Matrix multiplication (value)")
     print(Sys.time())
     A_inv <- readRDS(paste0("/mnt/nfs_fineprint/tmp/fabio/",vers,"/", version, year, "_L_value.rds"))
-    B_inv <- -A_inv %*% B %*% D_inv
+    B_inv <- as(-A_inv %*% B, "denseMatrix") %*% D_inv
     
     print("saving")
     print(Sys.time())
